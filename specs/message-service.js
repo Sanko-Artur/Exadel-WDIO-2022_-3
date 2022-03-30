@@ -32,15 +32,17 @@ function stopAllNodes() {
 }
 
 describe('Message Sending', function () {
+  let tokens = startAllNodes();
+  beforeEach(function () {
+    startAllNodes();
+  });
   context('Positive cases: successful sending of messages', function () {
     it('should send message to Earth without error', function () {
-      let tokens = startAllNodes();
       const response = sendMessage('Hello earthmen', 'Earth', tokens.earth);
       assertResponse(response, 'Success');
     });
 
     it('should send message to Mars without error', function () {
-      let tokens = startAllNodes();
       const response = sendMessage('Hello martians', 'Mars', tokens.mars);
       assertResponse(response, 'Success');
     });
@@ -48,13 +50,11 @@ describe('Message Sending', function () {
 
   context('Positive cases: invalid token', function () {
     it('should get Error message "Security Error" for Earth', function () {
-      startAllNodes();
       const response = sendMessage('Hello earthmen', 'Earth', 'M1234');
       assertResponse(response, 'Security Error');
     });
 
     it('should get Error message "Security Error" for Mars', function () {
-      startAllNodes();
       const response = sendMessage('Hello martians', 'Mars', 'E1234');
       assertResponse(response, 'Security Error');
     });
@@ -64,7 +64,6 @@ describe('Message Sending', function () {
     'Positive case: valid token and switched off a satellite for Mars',
     function () {
       it('should get Error message "Service is unavailable" for Mars', function () {
-        let tokens = startAllNodes();
         stopSatelite();
         const response = sendMessage('Hello martians', 'Mars', tokens.mars);
         assertResponse(response, 'Service is unavailable');
@@ -76,7 +75,6 @@ describe('Message Sending', function () {
     'Positive case: invalid token and switched off a satellite for Mars',
     function () {
       it('should get Error message "Service is unavailable" for Mars', function () {
-        startAllNodes();
         stopSatelite();
         const response = sendMessage('Hello martians', 'Mars', 'E1234');
         assertResponse(response, 'Service is unavailable');
