@@ -67,7 +67,7 @@ const localServices = ['chromedriver'];
 exports.config = {
   user: process.env.USER,
   key: process.env.KEY,
-  specs: ['./specs/**/message-service.js'],
+  specs: ['./specs/**/HW-3_task-5-extra.js'],
   exclude: [
     // 'path/to/excluded/files'
   ],

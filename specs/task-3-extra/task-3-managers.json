@@ -1,0 +1,21 @@
+{ "managers" : [
+  {
+    "email": "manager01@mail.ru",
+    "password": 123456,
+    "address1": "Street01",
+    "address2": "Dom01",
+    "zip": "01",
+    "city": "USA",
+    "extra": 2
+  },
+  {
+    "email": "manager02@mail.ru",
+    "password": 654321,
+    "address1": "Street02",
+    "address2": "Dom02",
+    "zip": "02",
+    "city": "Canada",
+    "extra": 3
+  }
+]
+}

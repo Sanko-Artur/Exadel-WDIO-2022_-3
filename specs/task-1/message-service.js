@@ -9,7 +9,7 @@ const {
   startMarsServer,
   sendMessage,
   assertResponse,
-} = require('./stubs/messageservice.stubs');
+} = require('../stubs/messageservice.stubs');
 
 // REMOVE THE BELOW CODE BEFORE START THE EXERCISE
 
