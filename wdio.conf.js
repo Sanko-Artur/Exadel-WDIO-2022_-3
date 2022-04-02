@@ -67,7 +67,7 @@ const localServices = ['chromedriver'];
 exports.config = {
   user: process.env.USER,
   key: process.env.KEY,
-  specs: ['./specs/**/HW-3_task-3-extra.js'],
+  specs: ['./specs/**/HW-3_task-4.js'],
   exclude: [
     // 'path/to/excluded/files'
   ],
