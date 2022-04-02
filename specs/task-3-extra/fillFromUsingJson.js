@@ -5,6 +5,28 @@ async function fillFormUsingJson(data) {
   const managersObj = JSON.parse(info);
   const managersInfo = managersObj.managers;
 
+  async function chooseCreateManager() {
+    await $(selectorCreatManager).waitForDisplayed({ timeout: 5000 });
+    await $(selectorCreatManager).click();
+  }
+
+  async function setValue(selector, value) {
+    await $(selector).waitForDisplayed({
+      timeout: 5000,
+    });
+    await $(selector).setValue(value);
+  }
+
+  async function chooseCityFromList() {
+    await $(selectorForListCity).waitForDisplayed({ timeout: 5000 });
+    await $(selectorForListCity).click();
+  }
+
+  async function clickCreateButton() {
+    await $(createButton).waitForDisplayed({ timeout: 5000 });
+    await $(createButton).click();
+  }
+
   const selectorCreatManager = '//ul[@id="first-nav-block"]/li[8]';
   const inputForEmailManager = '#email';
   const inputForPasswordManager = '#password';
@@ -16,43 +38,22 @@ async function fillFormUsingJson(data) {
   const createButton = "//button[@type='submit']";
 
   for (const manager in managersInfo) {
-    await $(selectorCreatManager).waitForDisplayed({ timeout: 5000 });
-    await $(selectorCreatManager).click();
+    await chooseCreateManager();
     for (let data in managersInfo[manager]) {
       if (data === 'email') {
-        await $(inputForEmailManager).waitForDisplayed({
-          timeout: 5000,
-        });
-        await $(inputForEmailManager).setValue(managersInfo[manager][data]);
+        await setValue(inputForEmailManager, managersInfo[manager][data]);
       } else if (data === 'password') {
-        await $(inputForPasswordManager).waitForDisplayed({
-          timeout: 5000,
-        });
-        await $(inputForPasswordManager).setValue(managersInfo[manager][data]);
+        await setValue(inputForPasswordManager, managersInfo[manager][data]);
       } else if (data === 'address1') {
-        await $(inputForAddress1Manager).waitForDisplayed({
-          timeout: 5000,
-        });
-        await $(inputForAddress1Manager).setValue(managersInfo[manager][data]);
+        await setValue(inputForAddress1Manager, managersInfo[manager][data]);
       } else if (data === 'address2') {
-        await $(inputForAddress2Manager).waitForDisplayed({
-          timeout: 5000,
-        });
-        await $(inputForAddress2Manager).setValue(managersInfo[manager][data]);
+        await setValue(inputForAddress2Manager, managersInfo[manager][data]);
       } else if (data === 'zip') {
-        await $(inputForZipManager).waitForDisplayed({
-          timeout: 5000,
-        });
-        await $(inputForZipManager).setValue(managersInfo[manager][data]);
+        await setValue(inputForZipManager, managersInfo[manager][data]);
       } else if (data === 'city') {
-        await $(inputForCityManager).waitForDisplayed({
-          timeout: 5000,
-        });
-        await $(inputForCityManager).setValue(managersInfo[manager][data]);
-        await $(selectorForListCity).waitForDisplayed({ timeout: 5000 });
-        await $(selectorForListCity).click();
-        await $(createButton).waitForDisplayed({ timeout: 5000 });
-        await $(createButton).click();
+        await setValue(inputForCityManager, managersInfo[manager][data]);
+        await chooseCityFromList();
+        await clickCreateButton();
       }
     }
   }
