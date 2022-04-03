@@ -51,7 +51,7 @@ class BaseMethods {
     await $(this.selectorCreatManager).click();
   }
 
-  async creatManager(email, password, address1, address2, zip, city) {
+  async creatManager(email, password, address1, address2, state, zip, city) {
     await $(this.inputForEmailManager).waitForDisplayed({
       timeout: 5000,
       timeoutMsg: `After 5 sec the element: ${this.inputForEmailManager} was not displayed`,
