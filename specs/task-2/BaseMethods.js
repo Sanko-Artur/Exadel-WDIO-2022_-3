@@ -52,29 +52,10 @@ class BaseMethods {
   }
 
   async creatManager(email, password, address1, address2, state, zip, city) {
-    await $(this.inputForEmailManager).waitForDisplayed({
-      timeout: 5000,
-      timeoutMsg: `After 5 sec the element: ${this.inputForEmailManager} was not displayed`,
-    });
-    await $(this.inputForEmailManager).setValue(email);
-
-    await $(this.inputForPasswordManager).waitForDisplayed({
-      timeout: 5000,
-      timeoutMsg: `After 5 sec the element: ${this.inputForPasswordManager} was not displayed`,
-    });
-    await $(this.inputForPasswordManager).setValue(password);
-
-    await $(this.inputForAddress1Manager).waitForDisplayed({
-      timeout: 5000,
-      timeoutMsg: `After 5 sec the element: ${this.inputForAddress1Manager} was not displayed`,
-    });
-    await $(this.inputForAddress1Manager).setValue(address1);
-
-    await $(this.inputForAddress2Manager).waitForDisplayed({
-      timeout: 5000,
-      timeoutMsg: `After 5 sec the element: ${this.inputForAddress2Manager} was not displayed`,
-    });
-    await $(this.inputForAddress2Manager).setValue(address2);
+    await this.setValue(this.inputForEmailManager, email);
+    await this.setValue(this.inputForPasswordManager, password);
+    await this.setValue(this.inputForAddress1Manager, address1);
+    await this.setValue(this.inputForAddress2Manager, address2);
 
     await $(this.dropListWithStates).waitForDisplayed({
       timeout: 5000,
@@ -90,29 +71,10 @@ class BaseMethods {
     });
     await $(`//select[@id='state']/child::option[@value='${state}']`).click();
 
-    await $(this.inputForZipManager).waitForDisplayed({
-      timeout: 5000,
-      timeoutMsg: `After 5 sec the element: ${this.inputForZipManager} was not displayed`,
-    });
-    await $(this.inputForZipManager).setValue(zip);
-
-    await $(this.inputForCityManager).waitForDisplayed({
-      timeout: 5000,
-      timeoutMsg: `After 5 sec the element: ${this.inputForCityManager} was not displayed`,
-    });
-    await $(this.inputForCityManager).setValue(city);
-
-    await $(this.selectorForListCity).waitForDisplayed({
-      timeout: 5000,
-      timeoutMsg: `After 5 sec the element: ${this.selectorForListCity} was not displayed`,
-    });
-    await $(this.selectorForListCity).click();
-
-    await $(this.createButton).waitForDisplayed({
-      timeout: 5000,
-      timeoutMsg: `After 5 sec the element: ${this.createButton} was not displayed`,
-    });
-    await $(this.createButton).click();
+    await this.setValue(this.inputForZipManager, zip);
+    await this.setValue(this.inputForCityManager, city);
+    await this.chooseCityFromList();
+    await this.clickCreateButton();
   }
 
   async chooseListUsers() {
@@ -173,6 +135,30 @@ class BaseMethods {
     await expect(cityManager).toHaveText(city);
   }
 
+  async chooseCityFromList() {
+    await $(this.selectorForListCity).waitForDisplayed({
+      timeout: 5000,
+      timeoutMsg: `After 5 sec the element: ${this.selectorForListCity} was not displayed`,
+    });
+    await $(this.selectorForListCity).click();
+  }
+
+  async clickCreateButton() {
+    await $(this.createButton).waitForDisplayed({
+      timeout: 5000,
+      timeoutMsg: `After 5 sec the element: ${this.createButton} was not displayed`,
+    });
+    await $(this.createButton).click();
+  }
+
+  async setValue(selector, value) {
+    await $(selector).waitForDisplayed({
+      timeout: 5000,
+      timeoutMsg: `After 5 sec the element: ${selector} was not displayed`,
+    });
+    await $(selector).setValue(value);
+  }
+
   async fillFormUsingJson(data) {
     const fs = require('fs');
 
@@ -180,54 +166,30 @@ class BaseMethods {
     const managersObj = JSON.parse(info);
     const managersInfo = managersObj.managers;
 
-    async function setValue(selector, value) {
-      await $(selector).waitForDisplayed({
-        timeout: 5000,
-        timeoutMsg: `After 5 sec the element: ${selector} was not displayed`,
-      });
-      await $(selector).setValue(value);
-    }
-
-    async function chooseCityFromList(selector) {
-      await $(selector).waitForDisplayed({
-        timeout: 5000,
-        timeoutMsg: `After 5 sec the element: ${selector} was not displayed`,
-      });
-      await $(selector).click();
-    }
-
-    async function clickCreateButton(selector) {
-      await $(selector).waitForDisplayed({
-        timeout: 5000,
-        timeoutMsg: `After 5 sec the element: ${selector} was not displayed`,
-      });
-      await $(selector).click();
-    }
-
     for (const manager in managersInfo) {
       await this.chooseCreatManager();
       for (let data in managersInfo[manager]) {
         switch (data) {
           case 'email':
-            await setValue(
+            await this.setValue(
               this.inputForEmailManager,
               managersInfo[manager][data]
             );
             break;
           case 'password':
-            await setValue(
+            await this.setValue(
               this.inputForPasswordManager,
               managersInfo[manager][data]
             );
             break;
           case 'address1':
-            await setValue(
+            await this.setValue(
               this.inputForAddress1Manager,
               managersInfo[manager][data]
             );
             break;
           case 'address2':
-            await setValue(
+            await this.setValue(
               this.inputForAddress2Manager,
               managersInfo[manager][data]
             );
@@ -245,21 +207,21 @@ class BaseMethods {
             ).click();
             break;
           case 'zip':
-            await setValue(
+            await this.setValue(
               this.inputForZipManager,
               managersInfo[manager][data]
             );
             break;
           case 'city':
-            await setValue(
+            await this.setValue(
               this.inputForCityManager,
               managersInfo[manager][data]
             );
-            await chooseCityFromList(this.selectorForListCity);
+            await this.chooseCityFromList();
             break;
         }
       }
-      await clickCreateButton(this.createButton);
+      await this.clickCreateButton();
     }
   }
 
