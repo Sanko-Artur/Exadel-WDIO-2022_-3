@@ -180,11 +180,6 @@ class BaseMethods {
     const managersObj = JSON.parse(info);
     const managersInfo = managersObj.managers;
 
-    async function chooseCreateManager(selector) {
-      await $(selector).waitForDisplayed({ timeout: 5000 });
-      await $(selector).click();
-    }
-
     async function setValue(selector, value) {
       await $(selector).waitForDisplayed({
         timeout: 5000,
@@ -210,7 +205,7 @@ class BaseMethods {
     }
 
     for (const manager in managersInfo) {
-      await chooseCreateManager(this.selectorCreatManager);
+      await this.chooseCreatManager();
       for (let data in managersInfo[manager]) {
         switch (data) {
           case 'email':
