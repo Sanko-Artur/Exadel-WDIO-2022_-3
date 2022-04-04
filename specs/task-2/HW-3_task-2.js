@@ -9,7 +9,6 @@ const managers = [
     state: 'US',
     zip: '01',
     city: 'USA',
-    extra: 2,
   },
   {
     email: 'manager02@mail.ru',
@@ -19,7 +18,6 @@ const managers = [
     state: 'CA',
     zip: '02',
     city: 'Canada',
-    extra: 3,
   },
 ];
 
@@ -27,45 +25,42 @@ describe('Test for task 2', async function () {
   before(async function () {
     await baseMethods.openURL();
     await baseMethods.loginIntoSystem();
-    await managers.forEach(async function ({
-      email,
-      password,
-      address1,
-      address2,
-      state,
-      zip,
-      city,
-    }) {
-      await baseMethods.chooseCreatManager();
-      await baseMethods.creatManager(
-        email,
-        password,
-        address1,
-        address2,
-        state,
-        zip,
-        city
-      );
-    });
+    await baseMethods.chooseCreatManager();
+    await baseMethods.creatManager(
+      managers[0].email,
+      managers[0].password,
+      managers[0].address1,
+      managers[0].address2,
+      managers[0].state,
+      managers[0].zip,
+      managers[0].city
+    );
+    await baseMethods.chooseCreatManager();
+    await baseMethods.creatManager(
+      managers[1].email,
+      managers[1].password,
+      managers[1].address1,
+      managers[1].address2,
+      managers[1].state,
+      managers[1].zip,
+      managers[1].city
+    );
   });
 
   context('Checking created managers', async function () {
-    managers.forEach(
-      ({ email, address1, address2, state, zip, city, extra }) => {
-        it(`should inspect created manager with email: ${email}`, async function () {
-          await baseMethods.chooseListUsers();
-          await baseMethods.checkManager(
-            email,
-            address1,
-            address2,
-            state,
-            zip,
-            city,
-            extra
-          );
-        });
-      }
-    );
+    managers.forEach(({ email, address1, address2, state, zip, city }) => {
+      it(`should inspect created manager with email: ${email}`, async function () {
+        await baseMethods.chooseListUsers();
+        await baseMethods.checkManager(
+          email,
+          address1,
+          address2,
+          state,
+          zip,
+          city
+        );
+      });
+    });
   });
 });
 

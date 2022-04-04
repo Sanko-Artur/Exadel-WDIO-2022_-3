@@ -28,13 +28,6 @@ async function fillFormUsingJson(data) {
   }
 
   const selectorCreatManager = '//ul[@id="first-nav-block"]/li[8]';
-  const inputForEmailManager = '#email';
-  const inputForPasswordManager = '#password';
-  const inputForAddress1Manager = '#address1';
-  const inputForAddress2Manager = '#address2';
-  const dropListWithStates = '#state';
-  const inputForZipManager = '#zip';
-  const inputForCityManager = "//input[@id='city']";
   const selectorForListCity = "//li[@id='autoComplete_result_1']";
   const createButton = "//button[@type='submit']";
 
@@ -43,37 +36,38 @@ async function fillFormUsingJson(data) {
     for (let data in managersInfo[manager]) {
       switch (data) {
         case 'email':
-          await setValue(inputForEmailManager, managersInfo[manager][data]);
+          await setValue(`#${data}`, managersInfo[manager][data]);
           break;
         case 'password':
-          await setValue(inputForPasswordManager, managersInfo[manager][data]);
+          await setValue(`#${data}`, managersInfo[manager][data]);
           break;
         case 'address1':
-          await setValue(inputForAddress1Manager, managersInfo[manager][data]);
+          await setValue(`#${data}`, managersInfo[manager][data]);
           break;
         case 'address2':
-          await setValue(inputForAddress2Manager, managersInfo[manager][data]);
+          await setValue(`#${data}`, managersInfo[manager][data]);
           break;
         case 'state':
-          await $(dropListWithStates).waitForDisplayed({ timeout: 5000 });
-          await $(dropListWithStates).click();
+          await $(`#${data}`).waitForDisplayed({ timeout: 5000 });
+          await $(`#${data}`).click();
           await $(
-            `//select[@id='state']/child::option[@value='${managersInfo[manager][data]}']`
+            `//select[@id='${data}']/child::option[@value='${managersInfo[manager][data]}']`
           ).waitForDisplayed({ timeout: 5000 });
           await $(
-            `//select[@id='state']/child::option[@value='${managersInfo[manager][data]}']`
+            `//select[@id='${data}']/child::option[@value='${managersInfo[manager][data]}']`
           ).click();
           break;
         case 'zip':
-          await setValue(inputForZipManager, managersInfo[manager][data]);
+          await setValue(`#${data}`, managersInfo[manager][data]);
           break;
         case 'city':
-          await setValue(inputForCityManager, managersInfo[manager][data]);
+          await setValue(`#${data}`, managersInfo[manager][data]);
           await chooseCityFromList();
           await clickCreateButton();
           break;
       }
     }
+    await clickCreateButton();
   }
 }
 

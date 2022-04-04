@@ -123,16 +123,12 @@ class BaseMethods {
     await $(this.selectorListUsers).click();
   }
 
-  async checkManager(email, address1, address2, state, zip, city, extra) {
-    await $(
-      `//div[starts-with(@class, "tabulator-row")][${extra}]`
-    ).waitForDisplayed({
+  async checkManager(email, address1, address2, state, zip, city) {
+    await $(`//div[contains(text() , "${email}")]/..`).waitForDisplayed({
       timeout: 5000,
-      timeoutMsg: `After 5 sec the element: //div[starts-with(@class, "tabulator-row")][${extra}] was not displayed`,
+      timeoutMsg: `After 5 sec the element: //div[contains(text() , "${email}")]/.. was not displayed`,
     });
-    const rowOfUser = await $(
-      `//div[starts-with(@class, "tabulator-row")][${extra}]`
-    );
+    const rowOfUser = await $(`//div[contains(text() , "${email}")]/..`);
 
     await rowOfUser.$(this.cellEmail).waitForDisplayed({
       timeout: 5000,
@@ -184,9 +180,9 @@ class BaseMethods {
     const managersObj = JSON.parse(info);
     const managersInfo = managersObj.managers;
 
-    async function chooseCreateManager() {
-      await $(this.selectorCreatManager).waitForDisplayed({ timeout: 5000 });
-      await $(this.selectorCreatManager).click();
+    async function chooseCreateManager(selector) {
+      await $(selector).waitForDisplayed({ timeout: 5000 });
+      await $(selector).click();
     }
 
     async function setValue(selector, value) {
@@ -197,24 +193,24 @@ class BaseMethods {
       await $(selector).setValue(value);
     }
 
-    async function chooseCityFromList() {
-      await $(this.selectorForListCity).waitForDisplayed({
+    async function chooseCityFromList(selector) {
+      await $(selector).waitForDisplayed({
         timeout: 5000,
-        timeoutMsg: `After 5 sec the element: ${this.selectorForListCity} was not displayed`,
+        timeoutMsg: `After 5 sec the element: ${selector} was not displayed`,
       });
-      await $(this.selectorForListCity).click();
+      await $(selector).click();
     }
 
-    async function clickCreateButton() {
-      await $(this.createButton).waitForDisplayed({
+    async function clickCreateButton(selector) {
+      await $(selector).waitForDisplayed({
         timeout: 5000,
-        timeoutMsg: `After 5 sec the element: ${this.createButton} was not displayed`,
+        timeoutMsg: `After 5 sec the element: ${selector} was not displayed`,
       });
-      await $(this.createButton).click();
+      await $(selector).click();
     }
 
     for (const manager in managersInfo) {
-      await chooseCreateManager();
+      await chooseCreateManager(this.selectorCreatManager);
       for (let data in managersInfo[manager]) {
         switch (data) {
           case 'email':
@@ -264,11 +260,11 @@ class BaseMethods {
               this.inputForCityManager,
               managersInfo[manager][data]
             );
-            await chooseCityFromList();
-            await clickCreateButton();
+            await chooseCityFromList(this.selectorForListCity);
             break;
         }
       }
+      await clickCreateButton(this.createButton);
     }
   }
 

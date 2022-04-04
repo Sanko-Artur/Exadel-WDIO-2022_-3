@@ -6,8 +6,7 @@
     "address2": "Dom01",
     "state":"US",
     "zip": "01",
-    "city": "USA",
-    "extra": 2
+    "city": "USA"
   },
   {
     "email": "manager02@mail.ru",
@@ -16,8 +15,7 @@
     "address2": "Dom02",
     "state": "CA",
     "zip": "02",
-    "city": "Canada",
-    "extra": 3
+    "city": "Canada"
   }
 ]
 }
