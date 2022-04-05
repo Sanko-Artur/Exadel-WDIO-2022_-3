@@ -25,8 +25,8 @@ describe('Test for task 2', async function () {
   before(async function () {
     await baseMethods.openURL();
     await baseMethods.loginIntoSystem();
-    await baseMethods.chooseCreatManager();
-    await baseMethods.creatManager(
+    await baseMethods.chooseCreateManager();
+    await baseMethods.createManager(
       managers[0].email,
       managers[0].password,
       managers[0].address1,
@@ -35,8 +35,8 @@ describe('Test for task 2', async function () {
       managers[0].zip,
       managers[0].city
     );
-    await baseMethods.chooseCreatManager();
-    await baseMethods.creatManager(
+    await baseMethods.chooseCreateManager();
+    await baseMethods.createManager(
       managers[1].email,
       managers[1].password,
       managers[1].address1,

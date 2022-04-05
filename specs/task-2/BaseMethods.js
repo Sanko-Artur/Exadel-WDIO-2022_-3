@@ -7,7 +7,7 @@ class BaseMethods {
     this.password = 'password';
     this.buttonLogin = 'button';
     this.spinner = '.spinner-border text-light';
-    this.selectorCreatManager = '//ul[@id="first-nav-block"]/li[8]';
+    this.selectorCreateManager = '//ul[@id="first-nav-block"]/li[8]';
     this.inputForEmailManager = '#email';
     this.inputForPasswordManager = '#password';
     this.inputForAddress1Manager = '#address1';
@@ -43,15 +43,15 @@ class BaseMethods {
     });
   }
 
-  async chooseCreatManager() {
-    await $(this.selectorCreatManager).waitForDisplayed({
+  async chooseCreateManager() {
+    await $(this.selectorCreateManager).waitForDisplayed({
       timeout: 5000,
-      timeoutMsg: `After 5 sec the element: ${this.selectorCreatManager} was not displayed`,
+      timeoutMsg: `After 5 sec the element: ${this.selectorCreateManager} was not displayed`,
     });
-    await $(this.selectorCreatManager).click();
+    await $(this.selectorCreateManager).click();
   }
 
-  async creatManager(email, password, address1, address2, state, zip, city) {
+  async createManager(email, password, address1, address2, state, zip, city) {
     await this.setValue(this.inputForEmailManager, email);
     await this.setValue(this.inputForPasswordManager, password);
     await this.setValue(this.inputForAddress1Manager, address1);
@@ -85,6 +85,15 @@ class BaseMethods {
     await $(this.selectorListUsers).click();
   }
 
+  async setPathToElementThroughSelectors(parent, child) {
+    await parent.$(child).waitForDisplayed({
+      timeout: 5000,
+      timeoutMsg: `After 5 sec the element: ${child} was not displayed`,
+    });
+    const element = parent.$(child);
+    return element;
+  }
+
   async checkManager(email, address1, address2, state, zip, city) {
     await $(`//div[contains(text() , "${email}")]/..`).waitForDisplayed({
       timeout: 5000,
@@ -92,46 +101,40 @@ class BaseMethods {
     });
     const rowOfUser = await $(`//div[contains(text() , "${email}")]/..`);
 
-    await rowOfUser.$(this.cellEmail).waitForDisplayed({
-      timeout: 5000,
-      timeoutMsg: `After 5 sec the element: ${this.cellEmail} was not displayed`,
-    });
-    const emailManager = rowOfUser.$(this.cellEmail);
+    const emailManager = await this.setPathToElementThroughSelectors(
+      rowOfUser,
+      this.cellEmail
+    );
     await expect(emailManager).toHaveText(email);
 
-    await rowOfUser.$(this.cellAddress1).waitForDisplayed({
-      timeout: 5000,
-      timeoutMsg: `After 5 sec the element: ${this.cellAddress1} was not displayed`,
-    });
-    const address1Manager = rowOfUser.$(this.cellAddress1);
+    const address1Manager = await this.setPathToElementThroughSelectors(
+      rowOfUser,
+      this.cellAddress1
+    );
     await expect(address1Manager).toHaveText(address1);
 
-    await rowOfUser.$(this.cellAddress2).waitForDisplayed({
-      timeout: 5000,
-      timeoutMsg: `After 5 sec the element: ${this.cellAddress2} was not displayed`,
-    });
-    const address2Manager = rowOfUser.$(this.cellAddress2);
+    const address2Manager = await this.setPathToElementThroughSelectors(
+      rowOfUser,
+      this.cellAddress2
+    );
     await expect(address2Manager).toHaveText(address2);
 
-    await rowOfUser.$(this.cellState).waitForDisplayed({
-      timeout: 5000,
-      timeoutMsg: `After 5 sec the element: ${this.cellState} was not displayed`,
-    });
-    const stateManager = rowOfUser.$(this.cellState);
+    const stateManager = await this.setPathToElementThroughSelectors(
+      rowOfUser,
+      this.cellState
+    );
     await expect(stateManager).toHaveText(state);
 
-    await rowOfUser.$(this.cellZip).waitForDisplayed({
-      timeout: 5000,
-      timeoutMsg: `After 5 sec the element: ${this.cellZip} was not displayed`,
-    });
-    const zipManager = rowOfUser.$(this.cellZip);
+    const zipManager = await this.setPathToElementThroughSelectors(
+      rowOfUser,
+      this.cellZip
+    );
     await expect(zipManager).toHaveText(zip);
 
-    await rowOfUser.$(this.cellCity).waitForDisplayed({
-      timeout: 5000,
-      timeoutMsg: `After 5 sec the element: ${this.cellCity} was not displayed`,
-    });
-    const cityManager = rowOfUser.$(this.cellCity);
+    const cityManager = await this.setPathToElementThroughSelectors(
+      rowOfUser,
+      this.cellCity
+    );
     await expect(cityManager).toHaveText(city);
   }
 
@@ -167,7 +170,7 @@ class BaseMethods {
     const managersInfo = managersObj.managers;
 
     for (const manager in managersInfo) {
-      await this.chooseCreatManager();
+      await this.chooseCreateManager();
       for (let data in managersInfo[manager]) {
         switch (data) {
           case 'email':

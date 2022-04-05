@@ -6,8 +6,8 @@ async function fillFormUsingJson(data) {
   const managersInfo = managersObj.managers;
 
   async function chooseCreateManager() {
-    await $(selectorCreatManager).waitForDisplayed({ timeout: 5000 });
-    await $(selectorCreatManager).click();
+    await $(selectorCreateManager).waitForDisplayed({ timeout: 5000 });
+    await $(selectorCreateManager).click();
   }
 
   async function setValue(selector, value) {
@@ -27,7 +27,7 @@ async function fillFormUsingJson(data) {
     await $(createButton).click();
   }
 
-  const selectorCreatManager = '//ul[@id="first-nav-block"]/li[8]';
+  const selectorCreateManager = '//ul[@id="first-nav-block"]/li[8]';
   const selectorForListCity = "//li[@id='autoComplete_result_1']";
   const createButton = "//button[@type='submit']";
 
