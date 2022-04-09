@@ -31,11 +31,6 @@ function stopAllNodes() {
   stopClientPC();
 }
 
-function startClientPCAndMarsServer() {
-  startClientPC();
-  startMarsServer();
-}
-
 describe('Message Sending', function () {
   context('Positive cases: successful sending of messages', function () {
     it('should send message to Earth without error', function () {
@@ -81,7 +76,8 @@ describe('Message Sending', function () {
     'Negative case: invalid token and switched off a satellite for Mars',
     function () {
       it('should get Error message "Service is unavailable" for Mars', function () {
-        startClientPCAndMarsServer();
+        startClientPC();
+        startMarsServer();
         const response = sendMessage('Hello martians', 'Mars', 'E1234');
         assertResponse(response, 'Service is unavailable');
       });
